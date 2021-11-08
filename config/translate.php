@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'default_language' => 'en',
     'languages' => [
         [
             'abbr' => 'bg',
@@ -112,6 +113,10 @@ return [
             'name' => 'Turkish',
             'original_name' => 'Türkçe',
         ],
+    ],
+    'import_adapters' => [
+        'csv' => \App\Translations\Import\ImportFromCSV::class,
+        'json' => \App\Translations\Import\ImportFromJSON::class,
     ]
 
 ];

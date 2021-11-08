@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('get_translations', [\App\Http\Controllers\TranslationController::class, 'index'])->name('get_translations');
+    Route::post('import_strings', [\App\Http\Controllers\TextController::class, 'importStrings'])->name('import_strings');
+    Route::post('import_from_laravel', [\App\Http\Controllers\TranslationController::class, 'importFromLaravel'])->name('import_from_laravel');
+    Route::post('save_translations', [\App\Http\Controllers\TranslationController::class, 'saveTranslations'])->name('save_translations');
+});
+
+//TODO: Make sure is authenticated

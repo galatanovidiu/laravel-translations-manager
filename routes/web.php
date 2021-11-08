@@ -25,5 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [\App\Http\Controllers\Dashboard::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/import_strings', [\App\Http\Controllers\Dashboard::class, 'import_strings'])->middleware(['auth', 'verified'])->name('dashboard.import_strings');
+
 
 require __DIR__.'/auth.php';

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Translations\Import;
+use App\Translations\TranslationsService;
 use Illuminate\Http\Request;
 
 class Dashboard extends Controller
@@ -13,7 +15,8 @@ class Dashboard extends Controller
 
         return inertia('Dashboard', [
             'languages' => config('translate.languages'),
-            'selected_language' => $selected_language,
+            'initial_selected_language' => $selected_language,
+            'initial_translations' => TranslationsService::getTranslations($selected_language),
         ]);
     }
 
