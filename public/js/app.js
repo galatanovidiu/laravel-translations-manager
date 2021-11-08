@@ -24501,7 +24501,7 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "max-w-6xl mx-auto sm:px-6 lg:px-8"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
   "class": "text-5xl font-bold"
-}, "Batch Admin Area")], -1
+}, "Translations Manager")], -1
 /* HOISTED */
 );
 
