@@ -22771,6 +22771,8 @@ __webpack_require__.r(__webpack_exports__);
       is_saved: false,
       importing_from_laravel: false,
       loading_translations: false,
+      is_doing_automatic_translation: false,
+      automatic_translation_element: null,
       notification: ''
     };
   },
@@ -22825,6 +22827,24 @@ __webpack_require__.r(__webpack_exports__);
         _this3.is_saved = true;
         _this3.importing_from_laravel = false;
         _this3.notification = 'Import from laravel is done';
+      });
+    },
+    automaticTranslation: function automaticTranslation(string, string_id, key) {
+      var _this4 = this;
+
+      this.is_doing_automatic_translation = true;
+      this.automatic_translation_element = string_id;
+      axios.post('/api/automatic_translation', {
+        service: 'google',
+        string_id: string_id,
+        string: string,
+        target_language: this.selected_language
+      }).then(function (response) {
+        _this4.translations[key]['translation']['translation'] = response.data.data.translation;
+        _this4.is_saved = true;
+        _this4.notification = response.data.info;
+        _this4.is_doing_automatic_translation = false;
+        _this4.automatic_translation_element = null;
       });
     },
     closeNotification: function closeNotification() {
@@ -24284,8 +24304,11 @@ var _hoisted_9 = {
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Import from CSV or JSON ");
 
-var _hoisted_11 = ["onUpdate:modelValue"];
-var _hoisted_12 = {
+var _hoisted_11 = {
+  "class": "flex justify-between items-start mb-1"
+};
+var _hoisted_12 = ["onUpdate:modelValue"];
+var _hoisted_13 = {
   "class": "pt-8"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -24367,12 +24390,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.translations, function (t) {
+      , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.translations, function (t, key) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-          key: t.id
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.string), 1
+          key: t.id,
+          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["py-4 px-2", {
+            'bg-gray-100': key % 2 === 0
+          }])
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(t.string), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+          "bg-color": "bg-red-500",
+          onClick: function onClick($event) {
+            return $options.automaticTranslation(t.string, t.id, key);
+          },
+          "class": "whitespace-nowrap"
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.is_doing_automatic_translation && $data.automatic_translation_element === t.id ? 'Translating, please wait...' : 'Google Translate'), 1
+            /* TEXT */
+            )];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1032
+        /* PROPS, DYNAMIC_SLOTS */
+        , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
           id: "",
           "onUpdate:modelValue": function onUpdateModelValue($event) {
             return t.translation.translation = $event;
@@ -24380,10 +24423,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "class": "shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
         }, null, 8
         /* PROPS */
-        , _hoisted_11), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, t.translation.translation]])]);
+        , _hoisted_12), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, t.translation.translation]])], 2
+        /* CLASS */
+        );
       }), 128
       /* KEYED_FRAGMENT */
-      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
+      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Button, {
         type: "button",
         "bg-color": "bg-indigo-500",
         onClick: $options.saveTranslations,

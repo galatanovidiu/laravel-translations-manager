@@ -35,8 +35,11 @@
                         </div>
 
                         <div>
-                            <div v-for="t in translations" :key="t.id">
-                                <div>{{t.string}}</div>
+                            <div v-for="(t, key) in translations" :key="t.id" class="py-4 px-2" :class="{'bg-gray-100': key % 2 === 0}">
+                                <div class="flex justify-between items-start mb-1">
+                                    <div>{{t.string}}</div>
+                                    <Button bg-color="bg-red-500" @click="automaticTranslation(t.string, t.id, key)" class="whitespace-nowrap">{{(is_doing_automatic_translation && automatic_translation_element === t.id) ? 'Translating, please wait...' : 'Google Translate'}}</Button>
+                                </div>
                                 <textarea id="" v-model="t.translation.translation" class="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"></textarea>
                             </div>
                         </div>
@@ -87,6 +90,8 @@ export default {
             is_saved: false,
             importing_from_laravel: false,
             loading_translations: false,
+            is_doing_automatic_translation: false,
+            automatic_translation_element: null,
             notification: ''
         }
     },
@@ -143,6 +148,24 @@ export default {
                 this.importing_from_laravel = false
                 this.notification = 'Import from laravel is done'
             })
+        },
+
+        automaticTranslation(string, string_id, key){
+            this.is_doing_automatic_translation = true
+            this.automatic_translation_element = string_id
+            axios.post('/api/automatic_translation', {
+                service: 'google',
+                string_id: string_id,
+                string: string,
+                target_language: this.selected_language,
+            }).then(response => {
+                this.translations[key]['translation']['translation'] = response.data.data.translation
+                this.is_saved = true
+                this.notification = response.data.info
+                this.is_doing_automatic_translation = false
+                this.automatic_translation_element = null
+            })
+
         },
 
         closeNotification(){

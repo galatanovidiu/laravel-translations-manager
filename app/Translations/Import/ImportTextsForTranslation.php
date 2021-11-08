@@ -2,7 +2,7 @@
 
 namespace App\Translations\Import;
 
-use App\Translations\TranslationsService;
+use App\Translations\TranslationsRepository;
 
 class ImportTextsForTranslation
 {
@@ -18,6 +18,6 @@ class ImportTextsForTranslation
     public function import(): array
     {
         $strings = $this->importer->get_formatted_text($this->file_content);
-        return TranslationsService::addStrings($strings);
+        return TranslationsRepository::addStrings($strings);
     }
 }

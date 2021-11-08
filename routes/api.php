@@ -23,6 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('import_strings', [\App\Http\Controllers\TextController::class, 'importStrings'])->name('import_strings');
     Route::post('import_from_laravel', [\App\Http\Controllers\TranslationController::class, 'importFromLaravel'])->name('import_from_laravel');
     Route::post('save_translations', [\App\Http\Controllers\TranslationController::class, 'saveTranslations'])->name('save_translations');
-});
 
-//TODO: Make sure is authenticated
+    Route::post('automatic_translation', [\App\Http\Controllers\TranslateService::class, 'translate'])->name('automatic_translation');
+});

@@ -5,7 +5,7 @@ namespace App\Translations;
 use App\Models\Text;
 use App\Models\Translation;
 
-class TranslationsService
+class TranslationsRepository
 {
 
 
@@ -58,12 +58,12 @@ class TranslationsService
         return $translation;
     }
 
-    public static function updateTranslation($string, $translation, $language)
+    public static function updateTranslation(int $text_id, string $translation, string $language)
     {
-        $translation_model = Translation::where('text_id', $string->id)->where('language', $language)->first();
+        $translation_model = Translation::where('text_id', $text_id)->where('language', $language)->first();
         if (!$translation_model) {
             $translation_model = new Translation();
-            $translation_model->text_id = $string->id;
+            $translation_model->text_id = $text_id;
             $translation_model->language = $language;
         }
         $translation_model->translation = $translation ?: '';

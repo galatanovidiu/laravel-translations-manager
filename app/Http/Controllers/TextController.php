@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Text;
 use App\Translations\Import\Import;
-use App\Translations\TranslationsService;
+use App\Translations\TranslationsRepository;
 use Illuminate\Http\Request;
 
 class TextController extends Controller
@@ -16,9 +16,9 @@ class TextController extends Controller
 
         $strings = Import::import($file);
 
-        TranslationsService::addStrings($strings);
+        TranslationsRepository::addStrings($strings);
 
-        return response(TranslationsService::getTranslations($request->selected_language ?: config('translate.default_language')));
+        return response(TranslationsRepository::getTranslations($request->selected_language ?: config('translate.default_language')));
     }
 
 
